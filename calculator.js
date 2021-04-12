@@ -1,10 +1,25 @@
-const { response, request } = require('express')
+// jshint esversion:6
+
 const express = require('express')
+
 const app = express()
-app.get('/', (_request, response) => {
-    response.send('<h1>Hello World!</h1>')
+const port = 2000
+
+app.use(express.json())
+app.use(
+    express.urlencoded({
+        extended: true,
+    })
+)
+
+app.get('/', (__request, response) => {
+    response.sendFile(__dirname + '/index.html')
+})
+app.post('/', (__request, response) => {
+    console.log(__request.body)
+    response.send('Thanks for poasting that')
 })
 
-app.listen(2000, () => {
-    console.log('Server started on port 2000')
+app.listen(port, () => {
+    console.log('Server running on port 2000')
 })
