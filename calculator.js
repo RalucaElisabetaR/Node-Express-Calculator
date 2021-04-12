@@ -3,7 +3,11 @@
 const express = require('express')
 
 const app = express()
-const port = 2000
+let port = process.env.PORT
+if (port == null || port == '') {
+    port = 2000
+}
+app.listen(port)
 
 app.use(express.json())
 app.use(
@@ -16,8 +20,11 @@ app.get('/', (__request, response) => {
     response.sendFile(__dirname + '/index.html')
 })
 app.post('/', (__request, response) => {
-    console.log(__request.body)
-    response.send('Thanks for poasting that')
+    let weight = parseFloat(__request.body.weight)
+    let height = parseFloat(__request.body.height)
+    let bmi = weight / (height * height)
+
+    response.send('Your BMI is ' + bmi)
 })
 
 app.listen(port, () => {
